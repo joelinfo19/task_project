@@ -1,12 +1,7 @@
 import React, {useEffect, useState} from "react";
-// const {google}= require('googleapis')
-// const path= require('path')
-// const fs = require('fs')
-// import {Navbar} from "../components/Navbar";
-// const url='http://localhost:3000/api/tasks'
+
 const url='https://task-js.herokuapp.com/api/upload'
 const url2='https://task-js.herokuapp.com/api/tasks'
-// const url3='http://localhost:3000/api/tasks'
 
 export const FilePage=()=>{
 
