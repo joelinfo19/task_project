@@ -6,6 +6,7 @@ const url2='https://task-js.herokuapp.com/api/tasks'
 export const FilePage=()=>{
 
     const [urlPdf, setUrlPdf] = useState('default')
+    const [search,setSearch]=useState("")
     const [user, setUser] = useState({
         title:"",
         author:"",
@@ -14,6 +15,7 @@ export const FilePage=()=>{
         data:""
 
     })
+    const [flag,setFlag]=useState(true)
     const [task,setTask]=useState([])
     // const form = useRef(null)
     const handleInputChange=(e:any)=>{
@@ -53,7 +55,11 @@ export const FilePage=()=>{
             .then(data => {
 
                 setUrlPdf(data.urlView)
+                if(data.urlView===""||data.urlView===null){
+                    setFlag(true)
+                }
                 console.log(data.urlView)
+                setFlag(false)
             })
 
 
@@ -127,11 +133,13 @@ export const FilePage=()=>{
         {/*// </div>*/}
         <div className="container border mt-3 ">
             {/*<div className="align-content-center">*/}
+                <h1 className="text-center">UPLOAD ASSIGNMENTS AND EXAMS</h1>
                 <div className="d-flex  justify-content-center">
+
                     <form onSubmit={createUser}>
 
                         <div className="form-group row">
-                            <label >Title</label>
+                            <label >Title </label>
                             <input type="text" name="title" value={user.title}  onChange={handleInputChange} />
                         </div>
                         <div className="form-group row">
@@ -147,11 +155,11 @@ export const FilePage=()=>{
                             <textarea  name="description" value={user.description}  onChange={handleInputChange}></textarea>
                         </div>
                         <div className="form-group row  mt-3 border">
-                            <label >Upload task please</label>
-                            <input type="file" name="file" onChange={(e) => onSubmit(e.target.files![0])}></input>
+                            <label >Upload task please *</label>
+                            <input type="file" name="file" required onChange={(e) => onSubmit(e.target.files![0])}></input>
                         </div>
                         <div className="mt-3">
-                            <button type="submit"className="btn btn-primary">
+                            <button type="submit" disabled={flag} className="btn btn-primary">
                                 save
                             </button>
                         </div>
@@ -164,8 +172,20 @@ export const FilePage=()=>{
             {/*</div>*/}
             <hr/>
             <div >
-                {
-                    task.map((data:any)=>(
+                <input
+                    className="form-control mr-sm-2"
+                    type="search"
+                    placeholder="Search for course or professor..."
+                    onChange={(event) => {
+                        setSearch(event.target.value)
+                    }}
+                />
+                { task.filter((val:any) => {
+                    if (search === "" ||val.course.toLowerCase().includes(search.toLowerCase())||val.author.toLowerCase().includes(search.toLowerCase())) {
+                        return val
+                    }
+                     return false
+                }).map((data:any)=>(
                         <div className="card mt-3"  key={data._id}>
                             <div className="card-header">
                                 {data.title}
@@ -173,7 +193,7 @@ export const FilePage=()=>{
                             <div className="card-body">
                                 <h5 className="card-title">{data.course} - {data.author}</h5>
                                 <p className="card-text">{data.description}</p>
-                                <a href={data.data} className="btn btn-primary">TAREA</a>
+                                <a href={data.data} className="btn btn-primary">GO TO TASK</a>
                             </div>
                             {/*<a key={data._id} href={data.data} className="">{data.title}</a>*/}
                         </div>

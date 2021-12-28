@@ -16,6 +16,8 @@
     "module": "esnext",
     "moduleResolution": "node",
     "resolveJsonModule": true,
+    "declarationMap": true,
+
     "isolatedModules": true,
     "noEmit": true,
     "jsx": "react-jsx"
