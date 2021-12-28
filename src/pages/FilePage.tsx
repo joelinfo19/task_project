@@ -1,46 +1,44 @@
-import React, {useRef, useState} from "react";
+import React, {useEffect, useState} from "react";
+// const {google}= require('googleapis')
+// const path= require('path')
+// const fs = require('fs')
 // import {Navbar} from "../components/Navbar";
-const url='http://localhost:3000/api/tasks'
-export const FilePage=()=>{
-    // const { courseId } = useParams()
+// const url='http://localhost:3000/api/tasks'
+const url='https://task-js.herokuapp.com/api/upload'
+const url2='https://task-js.herokuapp.com/api/tasks'
+// const url3='http://localhost:3000/api/tasks'
 
-    const [file, setFile] = useState('')
-    const [filename, setFilename] = useState('default')
+export const FilePage=()=>{
+
     const [urlPdf, setUrlPdf] = useState('default')
     const [user, setUser] = useState({
-        title:"test",
-        author:"sss",
-        course:"sss",
-        description:"ssss"
+        title:"",
+        author:"",
+        course:"",
+        description:"",
+        data:""
 
     })
-    const form = useRef(null)
+    const [task,setTask]=useState([])
+    // const form = useRef(null)
     const handleInputChange=(e:any)=>{
         setUser({
             ...user,
             [e.target.name]:e.target.value
         })
     }
-    const onChange = (e:any) => {
 
-        setFile(e.target.files[0])
-        setFilename(e.target.files[0].name)
-    }
-    const onSubmit = (e:any) => {
-        e.preventDefault()
+
+
+    const onSubmit = (file:any) => {
         const formData = new FormData()
-        formData.append('title',user.title)
-        formData.append('author',user.author)
-        formData.append('course',user.course)
-        formData.append('description',user.description)
+        // formData.append('title',user.title)
+        // formData.append('author',user.author)
+        // formData.append('course',user.course)
+        // formData.append('description',user.description)
         formData.append('myFile', file)
-        formData.append('myFile', filename)
 
         console.log(file)
-        console.log(filename)
-        // formData.append('myFile', text)
-        // formData.append('myFile', filename)
-
 
         console.log(formData)
         // const data={
@@ -57,80 +55,147 @@ export const FilePage=()=>{
 
         })
             .then(response => response.json())
-            .then(data => console.log(data))
+            .then(data => {
+
+                setUrlPdf(data.urlView)
+                console.log(data.urlView)
+            })
 
 
         //     .catch(error => console.log("msg: ", error))
     }
+    const createUser = (e:any) => {
+        e.preventDefault()
+        const userReal={
+            ...user,
+        }
+        userReal.data=urlPdf
 
-    //
-    //
-    //
-    // const getPdf = () => {
-    //     fetch('https://testunsaac.herokuapp.com/api/matriculas', {
-    //         method: 'GET'
-    //
-    //     })
-    //         .then(res => res.json())
-    //         .then(data => {
-    //             const { matriculas } = data
-    //             matriculas.map(matricula => {
-    //                 if (matricula._id == idMatricula) {
-    //                     setUrlPdf(matricula.silabus)
-    //                     // console.log(matricula._id)
-    //
-    //                 }
-    //             })
-    //             console.log(urlPdf)
-    //         })
-    //
-    //     fetch(url + urlPdf, {
-    //         method: 'GET',
-    //         responseType: 'blob'
-    //     })
-    //         .then(res => {
-    //             console.log(res)
-    //             window.open(res.url)
-    //         })
-    // }
-    //
+        fetch(url2 , {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userReal)
+
+        })
+            .then(response => response.json())
+            .then(data => console.log(data))
+
+        console.log('this is the url'+urlPdf)
+
+        //     .catch(error => console.log("msg: ", error))
+    }
+
+
+
+
+    const getPdf = () => {
+        fetch(url2, {
+            method: 'GET'
+
+        })
+            .then(res => res.json())
+            .then(data => {
+                setTask(data.tasks)
+                // console.log(data)
+            })
+        // console.log(task)
+
+    }
+    useEffect(()=>{
+        getPdf()
+       // fetch(url2, {
+       //          method: 'GET'
+       //
+       //      })
+       //          .then(res => res.json())
+       //          .then(data => {
+       //              setTask(data)
+       //              console.log(data)
+       //          })
+    })
+
 
 
 
     return(
-        // <div>
-        //     <form onSubmit={onSubmit}>
-        //         <h2>Curso id: {courseId}</h2>
-        //         <input type="file" name="file" onChange={(e) => onChange(e)}></input>
-        //         <button type="submit">Guardar</button>
-        //     </form>
-        //
-        //     <button onClick={getPdf} >Ver pdf</button>
-        //
-        // </div>
-        <div className="border d-flex  justify-content-center">
+        <>
+
+        {/*// <div>*/}
+        {/*//     <form onSubmit={onSubmit}>*/}
+        {/*//         <h2>Curso id: {courseId}</h2>*/}
+        {/*//         <input type="file" name="file" onChange={(e) => onChange(e)}></input>*/}
+        {/*//         <button type="submit">Guardar</button>*/}
+        {/*//     </form>*/}
+        {/*//*/}
+        {/*//     <button onClick={getPdf} >Ver pdf</button>*/}
+        {/*//*/}
+        {/*// </div>*/}
+        <div className="container border mt-3 ">
             {/*<div className="align-content-center">*/}
+                <div className="d-flex  justify-content-center">
+                    <form onSubmit={createUser}>
 
-                <form onSubmit={onSubmit}>
-                    <input type="file" name="file" onChange={(e) => onChange(e)}></input>
-                    <input type="text" name="title" value={user.title} defaultValue={user.title} onChange={handleInputChange} />
-                    <input type="text" name="author" value={user.author} defaultValue={user.title} onChange={handleInputChange}/>
-                    <input type="text" name="course" value={user.course} defaultValue={user.title} onChange={handleInputChange}/>
-                    <input type="text" name="description" value={user.description} defaultValue={user.title} onChange={handleInputChange}/>
+                        <div className="form-group row">
+                            <label >Title</label>
+                            <input type="text" name="title" value={user.title}  onChange={handleInputChange} />
+                        </div>
+                        <div className="form-group row">
+                            <label >Professor</label>
+                            <input type="text" name="author" value={user.author} onChange={handleInputChange}/>
+                        </div>
+                        <div className="form-group row">
+                            <label >Name of the course</label>
+                            <input type="text" name="course" value={user.course}  onChange={handleInputChange}/>
+                        </div>
+                        <div className="form-group row">
+                            <label >Description</label>
+                            <textarea  name="description" value={user.description}  onChange={handleInputChange}></textarea>
+                        </div>
+                        <div className="form-group row  mt-3 border">
+                            <label >Upload task please</label>
+                            <input type="file" name="file" onChange={(e) => onSubmit(e.target.files![0])}></input>
+                        </div>
+                        <div className="mt-3">
+                            <button type="submit"className="btn btn-primary">
+                                save
+                            </button>
+                        </div>
+
+                    </form>
+
+                </div>
 
 
-                    {/*<input type="text" name="user[author]" defaultValue={user.author} />*/}
-
-                    <div>
-                        <button type="submit"className="btn btn-primary">
-                            save
-                        </button>
-                    </div>
-                </form>
             {/*</div>*/}
+            <hr/>
+            <div >
+                {
+                    task.map((data:any)=>(
+                        <div className="card mt-3"  key={data._id}>
+                            <div className="card-header">
+                                {data.title}
+                            </div>
+                            <div className="card-body">
+                                <h5 className="card-title">{data.course} - {data.author}</h5>
+                                <p className="card-text">{data.description}</p>
+                                <a href={data.data} className="btn btn-primary">TAREA</a>
+                            </div>
+                            {/*<a key={data._id} href={data.data} className="">{data.title}</a>*/}
+                        </div>
+                    ))
+                }
+            </div>
 
 
         </div>
+
+
+        {/*<div className="card">*/}
+        {/*    <div className="card-body">*/}
+        {/*        <a href="#" className="btn btn-primary">Go somewhere</a>*/}
+        {/*    </div>*/}
+        {/*</div>*/}
+        </>
     )
 
 
