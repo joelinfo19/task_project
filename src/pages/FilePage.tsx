@@ -16,7 +16,33 @@ export const FilePage=()=>{
 
     })
     const [flag,setFlag]=useState(true)
+    const createUser =  (e:any) => {
+        e.preventDefault()
+        const userReal={
+            ...user,
+        }
+        userReal.data=urlPdf
+
+        fetch(url2 , {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userReal)
+
+        })
+            .then(response => response.json())
+            .then(data =>{
+                getPdf()
+                console.log(data)
+            })
+
+        console.log('this is the url'+urlPdf)
+
+        //     .catch(error => console.log("msg: ", error))
+    }
     const [task,setTask]=useState([])
+
+
+
     // const form = useRef(null)
     const handleInputChange=(e:any)=>{
         setUser({
@@ -24,9 +50,6 @@ export const FilePage=()=>{
             [e.target.name]:e.target.value
         })
     }
-
-
-
     const onSubmit = (file:any) => {
         const formData = new FormData()
         // formData.append('title',user.title)
@@ -65,32 +88,12 @@ export const FilePage=()=>{
 
         //     .catch(error => console.log("msg: ", error))
     }
-    const createUser = (e:any) => {
-        e.preventDefault()
-        const userReal={
-            ...user,
-        }
-        userReal.data=urlPdf
-
-        fetch(url2 , {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(userReal)
-
-        })
-            .then(response => response.json())
-            .then(data => console.log(data))
-
-        console.log('this is the url'+urlPdf)
-
-        //     .catch(error => console.log("msg: ", error))
-    }
 
 
 
 
-    const getPdf = () => {
-        fetch(url2, {
+    const getPdf = async () => {
+        await fetch(url2, {
             method: 'GET'
 
         })
@@ -113,7 +116,7 @@ export const FilePage=()=>{
        //              setTask(data)
        //              console.log(data)
        //          })
-    })
+    },[])
 
 
 
