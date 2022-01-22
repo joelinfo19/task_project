@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-
+import Swal from 'sweetalert2'
 const url='https://task-js.herokuapp.com/api/upload'
 const url2='https://task-js.herokuapp.com/api/tasks'
 
