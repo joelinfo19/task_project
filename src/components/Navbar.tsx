@@ -1,55 +1,24 @@
 import React from "react";
+import {BrowserRouter, Routes, Route} from 'react-router-dom';
+import {LogInButton} from "./LogInButton";
+import sty from './styles/Navbar.module.css';
 
 export const Navbar=()=>{
-    return(
-        <div className="container">
-                <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                    <div className="container-fluid">
-                        <a className="navbar-brand" href="#">Navbar</a>
-                        <button className="navbar-toggler" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#jojolete" aria-controls="navbarSupportedContent" aria-expanded="false"
-                                aria-label="Toggle navigation">
-                            <span className="navbar-toggler-icon"></span>
-                        </button>
-                        {/*<app-courses className="collapse navbar-collapse" id="jojolete"/>*/}
-                        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                            <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-                                <li className="nav-item">
-                                    <a className="nav-link active" aria-current="page" href="#">Home</a>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link" href="#">Link</a>
-                                </li>
-                                <li className="nav-item dropdown">
-                                    <a className="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
-                                       data-bs-toggle="dropdown" aria-expanded="false">
-                                        Dropdown
-                                    </a>
-                                    <ul className="dropdown-menu" aria-labelledby="navbarDropdown">
-                                        <li>
-                                            <hr className="dropdown-divider"/>
-                                        </li>
-                                        <li><a className="dropdown-item" href="#">Something else here</a></li>
-                                    </ul>
-                                </li>
-                                <li className="nav-item">
-                                    <a className="nav-link disabled" href="#"
-                                       aria-disabled="true">Disabled</a>
-                                </li>
-                            </ul>
-                            <form className="d-flex">
-                                <input className="form-control me-2" type="search" placeholder="Search"
-                                       aria-label="Search"/>
-                                    <button className="btn btn-outline-success" type="submit">Search</button>
-                            </form>
-                        </div>
-                    </div>
-                </nav>
-
-
-        </div>
-    )
-
-
+  return(
+    <div className={sty.navbar}>
+      <div className={sty.navbar_courses}>
+        <button className={sty.navbar_courses_button}>Cursos</button>
+      </div>
+      <div className={sty.navbar_profile}>
+        <BrowserRouter>
+          <Routes>
+            <Route path='/' element={<LogInButton/>}></Route>
+            <Route path='/user' element={<p>profile</p>}></Route>
+            <Route path='*' element={<p>Iniciar sesión</p>}></Route>
+          </Routes>
+        </BrowserRouter>
+      </div>
+    </div>
+  )
 
 }

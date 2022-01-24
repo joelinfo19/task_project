@@ -1,0 +1,27 @@
+
+:root {
+  --verde-claro: #8b8e7d;
+  --verde-oscuro: #314c40;
+}
+
+.button_container {
+  background-color: var(--verde-claro);
+  width: 6.5rem;
+  height: 3rem;
+  border: 3px solid var(--verde-oscuro);
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  align-content: center;
+}
+
+.button_container:hover {
+  border: 4px solid var(--verde-oscuro);
+}
+
+.text {
+  font-size: 10pt;
+  text-align: center;
+  color: var(--verde-oscuro)
+}
