@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-
+import Swal from 'sweetalert2'
 const url='https://task-js.herokuapp.com/api/upload'
 const url2='https://task-js.herokuapp.com/api/tasks'
 
@@ -32,11 +32,24 @@ export const FilePage=()=>{
             .then(response => response.json())
             .then(data =>{
                 getPdf()
-                console.log(data)
+                Swal.fire({
+                    icon:'success',
+                    title:"Your work has been saved"
+
+                })
+
+            //    console.log(data)
             })
 
         console.log('this is the url'+urlPdf)
-
+        setUser({
+            title:"",
+            author:"",
+            course:"",
+            description:"",
+            data:""
+        })
+        e.target.reset();
         //     .catch(error => console.log("msg: ", error))
     }
     const [task,setTask]=useState([])
@@ -51,42 +64,77 @@ export const FilePage=()=>{
         })
     }
     const onSubmit = (file:any) => {
-        const formData = new FormData()
-        // formData.append('title',user.title)
-        // formData.append('author',user.author)
-        // formData.append('course',user.course)
-        // formData.append('description',user.description)
-        formData.append('myFile', file)
-
-        console.log(file)
-
-        console.log(formData)
-        // const data={
-        //     title:"test",
-        //     author:"test",
-        //     course:"test",
-        //     description:"test",
-        //     data:formData
+        // {
+        //     const {target}=e
+        //     if(target.value.length>0){
+        //         onSubmit(e.target.files![0])
+        //     }
+        //     else{
+        //         e.target.res;
+        //     }
+        //
         // }
-        // console.log(data)
-        fetch(url , {
-            method: 'POST',
-            body: formData
+        if(file.target.value.length>0) {
+            const formData = new FormData()
+            // formData.append('title',user.title)
+            // formData.append('author',user.author)
+            // formData.append('course',user.course)
+            // formData.append('description',user.description)
+            formData.append('myFile', file.target.files![0])
 
-        })
-            .then(response => response.json())
-            .then(data => {
+            console.log(file)
 
-                setUrlPdf(data.urlView)
-                if(data.urlView===""||data.urlView===null){
-                    setFlag(true)
-                }
-                console.log(data.urlView)
-                setFlag(false)
+            console.log(formData)
+            // const data={
+            //     title:"test",
+            //     author:"test",
+            //     course:"test",
+            //     description:"test",
+            //     data:formData
+            // }
+            // console.log(data)
+            Swal.fire({
+                title: 'Loading',
+                text: 'Wait a moment please'
             })
+            Swal.showLoading()
+            fetch(url, {
+                method: 'POST',
+                body: formData
 
 
-        //     .catch(error => console.log("msg: ", error))
+            })
+                .then(response => response.json())
+                .then(data => {
+                    // Swal.fire('Saved!', '', 'success')
+                    Swal.close()
+                    Swal.fire({
+                        title: 'File uploaded successfully',
+
+                    })
+                    setUrlPdf(data.urlView)
+                    if (data.urlView === "" || data.urlView === null) {
+                        setFlag(true)
+                    }
+                    console.log(data.urlView)
+                    setFlag(false)
+                })
+                .catch(err => {
+                    Swal.close()
+                    Swal.fire({
+                        title: 'errr',
+
+                    })
+                    console.log('error:::', err)
+                })
+
+        }
+        else{
+                console.log('no')
+            }
+
+
+
     }
 
 
@@ -159,7 +207,7 @@ export const FilePage=()=>{
                         </div>
                         <div className="form-group row  mt-3 border">
                             <label >Upload task please *</label>
-                            <input type="file" name="file" required onChange={(e) => onSubmit(e.target.files![0])}></input>
+                            <input type="file" name="file" required onChange={(e) => onSubmit(e)}></input>
                         </div>
                         <div className="mt-3">
                             <button type="submit" disabled={flag} className="btn btn-primary">
@@ -188,7 +236,7 @@ export const FilePage=()=>{
                         return val
                     }
                      return false
-                }).map((data:any)=>(
+                }).reverse().map((data:any)=>(
                         <div className="card mt-3"  key={data._id}>
                             <div className="card-header">
                                 {data.title}
