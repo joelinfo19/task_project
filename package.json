@@ -17,7 +17,7 @@
     "react-dom": "^17.0.2",
     "react-icons": "^4.3.1",
     "react-router-dom": "^6.2.1",
-    "react-scripts": "4.0.3",
+    "react-scripts": "^5.0.1",
     "spdy-transport": "^3.0.0",
     "sweetalert2": "^11.3.6",
     "typescript": "^4.1.2",
