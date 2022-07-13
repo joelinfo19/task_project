@@ -1,21 +1,15 @@
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi';
 
 type Props = React.PropsWithChildren<{}>
 
 export default function Dashboard({ children }: Props) {
-  const [isOpen, setIsOpen] = useState(true);
-  const toggle = () => {
-    setIsOpen(!isOpen);
-  }
 
-  var anchoVentana = window.innerWidth
-  useEffect(() => {
-    if (anchoVentana < 640) {
-      setIsOpen(false)
-    }
-  },[anchoVentana]);
+  const [open, setOpen] = useState(true);
+  const toggle = () => {
+    setOpen(!open);
+  }
 
   const menus = [
     { link: "/", title: "Inicio", icon: "fa fa-home" },
@@ -25,17 +19,13 @@ export default function Dashboard({ children }: Props) {
   ];
 
 
-
-
   return (
     <>
       <div className=' w-[100vw] h-[100vh] flex flex-row '>
-        <nav className={`${isOpen ? 'w-64 ' : 'w-0'} bg-[#363740] h-full duration-300 `}>
-          {/* <nav className={`${isOpen ? 'w-0 sm:0 md:w-64 lg-64 ' : 'w-64 sm:0 md:0 lg:w-0'} bg-[#363740] h-full duration-300  `}> */}
+        <nav className={`${`${open ? 'w-64 ' : 'w-0'}`}  bg-[#363740] h-full duration-300`} id='naavbaar' >
           {/* NAVBAR */}
-          {/* <h2 className=' text-center my-10 text-xl'>SIDEBAR</h2> */}
           <img className=' w-28 mx-auto my-8' src="https://cdn-icons-png.flaticon.com/512/1534/1534938.png" alt="" />
-          <ul className={`${isOpen ? 'opacity-1' : 'opacity-0 pointer-events-none'}`}>
+          <ul className={`${open ? 'opacity-1' : 'opacity-0 pointer-events-none'}`}>
             {
               menus.map((e, i) => (
                 <Link to={e.link} key={i}>
