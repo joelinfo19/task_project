@@ -3,13 +3,15 @@ import React from 'react';
 import {FilePage} from "./pages/FilePage";
 import {Navbar} from './components/Navbar';
 import {HomePage} from './pages/HomePage';
+import {LoginPage} from "./pages/LoginPage";
 
 export const App=()=> {
   return (
     <div>
       {/*<HomePage/>*/}
       {/*<HomePage/>*/}
-      <FilePage/>
+      {/*<FilePage/>*/}
+      <LoginPage/>
     </div>
   );
 }
