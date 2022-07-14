@@ -191,19 +191,19 @@ export const FilePage=()=>{
 
                         <div className="form-group row">
                             <label >Title </label>
-                            <input type="text" name="title" value={user.title}  onChange={handleInputChange} />
+                            <input type="text" className="form-control"  name="title" value={user.title}  onChange={handleInputChange} />
                         </div>
                         <div className="form-group row">
                             <label >Professor</label>
-                            <input type="text" name="author" value={user.author} onChange={handleInputChange}/>
+                            <input type="text" className="form-control" name="author" value={user.author} onChange={handleInputChange}/>
                         </div>
                         <div className="form-group row">
                             <label >Name of the course</label>
-                            <input type="text" name="course" value={user.course}  onChange={handleInputChange}/>
+                            <input type="text" className="form-control" name="course" value={user.course}  onChange={handleInputChange}/>
                         </div>
                         <div className="form-group row">
                             <label >Description</label>
-                            <textarea  name="description" value={user.description}  onChange={handleInputChange}></textarea>
+                            <textarea className="form-control" name="description" value={user.description}  onChange={handleInputChange}></textarea>
                         </div>
                         <div className="form-group row  mt-3 border">
                             <label >Upload task please *</label>
