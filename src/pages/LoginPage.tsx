@@ -1,7 +1,26 @@
 import React from "react";
 // import {Navbar} from "../components/Navbar";
 
+import axios from 'axios'
+
+
+
+
 export const LoginPage=()=>{
+
+    const initialForm={
+        name:'',
+        email:'',
+        password:'',
+    };
+
+
+
+    const handleSubmit=()=>{
+
+    }
+
+
     return(
         // <div className=" ">
 
