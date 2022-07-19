@@ -1,22 +1,58 @@
-import React from "react";
+import React, {useState} from "react";
 // import {Navbar} from "../components/Navbar";
 
 import axios from 'axios'
+import {useForm} from "../hooks/useForm";
 
-
-
+const api=axios.create({
+    baseURL:``
+})
 
 export const LoginPage=()=>{
-
-    const initialForm={
+    // const [name,setName]=useState()
+    // const [email,setEmail]=useState()
+    // const [password,setPassword]=useState()
+    const registerForm={
         name:'',
         email:'',
         password:'',
     };
+    const loginForm={
+        email:'',
+        password:'',
+    };
+    const [valuesRegister,handleInputChange]=useForm(registerForm)
+    const [valuesLogin,handleInputChange2]=useForm(loginForm)
+
+
+    const {name,email,password}=valuesRegister
+    const {email:emailLogin,password:passwordLogin}=valuesLogin
 
 
 
-    const handleSubmit=()=>{
+    const handleSubmit=(e:any)=>{
+        e.preventDefault()
+        // console.log(e.target.value)
+        // const {name,email,password}
+        // setName(name)
+        // setEmail(email)
+        // setPassword(password)
+        // console.log(emailLogin)
+        // console.log(name)
+        console.log(name)
+
+        console.log(email)
+        console.log(password)
+    }
+    const handleSubmit2=(e:any)=>{
+        e.preventDefault()
+        // console.log(e.target.value)
+        // const {name,email,password}
+        // setName(name)
+        // setEmail(email)
+        // setPassword(password)
+        console.log(emailLogin)
+        console.log(passwordLogin)
 
     }
 
@@ -25,76 +61,99 @@ export const LoginPage=()=>{
         // <div className=" ">
 
 
-            <div className="flex items-center justify-center h-screen  bg-[url('https://www.kindacode.com/wp-content/uploads/2022/06/night-sky.jpeg')] bg-cover bg-center">
-                {/*<div className="border ">*/}
+        <div className="flex items-center justify-center h-screen  bg-[url('https://www.kindacode.com/wp-content/uploads/2022/06/night-sky.jpeg')] bg-cover bg-center">
+            {/*<div className="border ">*/}
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 ">
-                    <div className="  w-full h-full  ">
+            <div className="grid grid-cols-1 sm:grid-cols-2 ">
+                <div className="  w-full h-full  ">
 
-                        <div className=" w-full p-6 m-auto bg-white border-t  rounded shadow-lg  sm:max-w-md mb-5">
-                            <h1 className="text-3xl font-semibold text-center text-gray-800">
-                                Iniciar sesion
-                            </h1>
-                            <form className="mt-6">
-                                <div>
-                                    <label htmlFor="email" className="block font-semibold  text-sm text-gray-800"> Correo electronico</label>
-                                    <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                           type="email"
-                                           placeholder="correo electronico"
-                                    />
-                                </div>
-                                <div className="mt-4 ">
-                                    <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
-                                    <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                           type="password"
-                                           placeholder="contrasenia"
-                                    />
-                                </div>
-                                <button className="mt-4 border w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-800">
-                                    Ingresar
-                                </button>
-                            </form>
-                        </div>
+                    <div className=" w-full p-6 m-auto bg-white border-t  rounded shadow-lg  sm:max-w-md mb-5">
+                        <h1 className="text-3xl font-semibold text-center text-gray-800">
+                            Iniciar sesion
+                        </h1>
+                        <form className="mt-6" onSubmit={handleSubmit2}>
+                            <div>
+                                <label htmlFor="email" className="block font-semibold  text-sm text-gray-800"> Correo electronico</label>
+                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                       type="email"
+                                       name="email"
+                                       value={emailLogin}
+                                       onChange={handleInputChange2}
+                                       placeholder="correo electronico"
+                                />
+                            </div>
+                            <div className="mt-4 ">
+                                <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
+                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                       type="password"
+                                       name="password"
+                                       value={passwordLogin}
+
+                                       onChange={handleInputChange2}
+
+                                       placeholder="contrasenia"
+                                />
+                            </div>
+                            <button className="mt-4 border w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-800">
+                                Ingresar
+                            </button>
+                        </form>
                     </div>
-                    <div className="w-full p-6 m-auto bg-white border-t rounded shadow-lg  sm:max-w-md sm:ml-5 ">
-                        <div className="col-span-2  ">
-                            <h1 className="text-3xl font-semibold text-center  text-gray-800">
-                                Registrarse
-                            </h1>
-                            <form className="mt-6">
-                                <div className="">
-                                    <label htmlFor="name" className="block font-semibold text-sm text-gray-800"> Nombre de usuario </label>
-                                    <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                           type="text"
-                                           placeholder="nombre de usuario"
-                                    />
-                                </div>
-                                <div className="mt-4 ">
-                                    <label htmlFor="email" className="block font-semibold text-sm text-gray-800"> Email</label>
-                                    <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                           type="email"
-                                           placeholder="correo electronico"
-                                    />
-                                </div>
-                                <div className="mt-4 ">
-                                    <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
-                                    <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
-                                           type="password"
-                                           placeholder="contrasenia"
-                                    />
-                                </div>
+                </div>
+                <div className="w-full p-6 m-auto bg-white border-t rounded shadow-lg  sm:max-w-md sm:ml-5 ">
+                    <div className="col-span-2  ">
+                        <h1 className="text-3xl font-semibold text-center  text-gray-800">
+                            Registrarse
+                        </h1>
+                        <form className="mt-6" onSubmit={handleSubmit}>
+                            <div className="">
+                                <label htmlFor="name" className="block font-semibold text-sm text-gray-800"> Nombre de usuario </label>
+                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                       type="text"
+                                       name="name"
+                                       value={name}
+                                       onChange={handleInputChange}
+                                       placeholder="nombre de usuario"
+                                />
+                            </div>
+                            <div className="mt-4 ">
+                                <label
+                                    htmlFor="email"
+                                    className="block font-semibold text-sm text-gray-800">
+                                    Correo Electronico
+                                </label>
+                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                       type="email"
+                                       name="email"
+                                       value={email}
+                                       onChange={handleInputChange}
+                                       placeholder="correo electronico"
+                                />
+                            </div>
+                            <div className="mt-4 ">
+                                <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
+                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                       type="password"
+                                       name="password"
+                                       value={password}
+                                       onChange={handleInputChange}
 
-                                <button className="mt-4 border w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-800">
-                                    Crear Cuenta
-                                </button>
-                            </form>
-                        </div>
 
+                                       placeholder="contrasenia"
+                                />
+                            </div>
+
+                            <button  className="mt-4 border w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-800">
+                                Crear Cuenta
+                            </button>
+                        </form>
                     </div>
 
                 </div>
 
             </div>
+
+        </div>
 
 
 
