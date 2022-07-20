@@ -1,17 +1,21 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 // import {Navbar} from "../components/Navbar";
+//TODO: Implement validations
 
 import axios from 'axios'
 import {useForm} from "../hooks/useForm";
+import {useNavigate} from "react-router-dom";
 
-const api=axios.create({
-    baseURL:``
-})
-
+const baseURL="https://task-js.herokuapp.com/api/users"
+const loginURL="https://task-js.herokuapp.com/api/login"
 export const LoginPage=()=>{
+    let navigate=useNavigate()
     // const [name,setName]=useState()
     // const [email,setEmail]=useState()
     // const [password,setPassword]=useState()
+    const [user,setUser]=useState()
+
+
     const registerForm={
         name:'',
         email:'',
@@ -28,31 +32,68 @@ export const LoginPage=()=>{
     const {name,email,password}=valuesRegister
     const {email:emailLogin,password:passwordLogin}=valuesLogin
 
+    useEffect(()=>{
+        axios.get(baseURL)
+            .then((res)=>{
+                setUser(res.data)
+                // console.log(user)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
 
+    },[])
+    const registerUser=()=>{
+        axios.post(baseURL,valuesRegister)
+            .then((res)=>{
+                setUser(res.data)
+                if(res.data.ok){
+                    navigate("/",{replace:true})
+                }
+            })
+            .catch((err)=>{
+                console.log(err.response.data)
+            })
+    }
+    const login=()=>{
+        axios.post(loginURL,valuesLogin)
+            .then((res)=>{
+            if(res.data.ok){
+                navigate("/",{replace:true})
+            }
+            // console.log(res)
+        })
+            .catch(err=>{
+                console.log(err.response.data)
+            })
+    }
 
-    const handleSubmit=(e:any)=>{
+    const handleRegister=(e:any)=>{
         e.preventDefault()
+        registerUser()
         // console.log(e.target.value)
         // const {name,email,password}
         // setName(name)
         // setEmail(email)
         // setPassword(password)
         // console.log(emailLogin)
+        console.log(valuesRegister)
         // console.log(name)
         console.log(name)
 
         console.log(email)
         console.log(password)
     }
-    const handleSubmit2=(e:any)=>{
+    const handleLogin=(e:any)=>{
         e.preventDefault()
         // console.log(e.target.value)
         // const {name,email,password}
         // setName(name)
         // setEmail(email)
         // setPassword(password)
-        console.log(emailLogin)
-        console.log(passwordLogin)
+        login()
+        // console.log(emailLogin)
+        // console.log(passwordLogin)
 
     }
 
@@ -71,7 +112,7 @@ export const LoginPage=()=>{
                         <h1 className="text-3xl font-semibold text-center text-gray-800">
                             Iniciar sesion
                         </h1>
-                        <form className="mt-6" onSubmit={handleSubmit2}>
+                        <form className="mt-6" onSubmit={handleLogin}>
                             <div>
                                 <label htmlFor="email" className="block font-semibold  text-sm text-gray-800"> Correo electronico</label>
                                 <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
@@ -105,7 +146,7 @@ export const LoginPage=()=>{
                         <h1 className="text-3xl font-semibold text-center  text-gray-800">
                             Registrarse
                         </h1>
-                        <form className="mt-6" onSubmit={handleSubmit}>
+                        <form className="mt-6" onSubmit={handleRegister}>
                             <div className="">
                                 <label htmlFor="name" className="block font-semibold text-sm text-gray-800"> Nombre de usuario </label>
                                 <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
