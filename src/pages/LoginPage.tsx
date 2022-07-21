@@ -14,7 +14,17 @@ export const LoginPage=()=>{
     // const [email,setEmail]=useState()
     // const [password,setPassword]=useState()
     const [user,setUser]=useState()
-
+    const [validName,setValidName]=useState(true)
+    const [validTempName,setValidTempName]=useState(true)
+    const [validEmailRegister,setValidEmailRegister]=useState(true)
+    const [validTempEmailRegister,setValidTempEmailRegister]=useState(true)
+    const [validPasswordRegister,setValidPasswordRegister]=useState(true)
+    const [validTempPasswordRegister,setValidTempPasswordRegister]=useState(true)
+    const [userFocus,setUserFocus]=useState(false)
+    const [emailFocus,setEmailFocus]=useState(false)
+    const [pswFocus,setPswFocus]=useState(false)
+    const [error,setError]=useState(null)
+    const [errorLogin,setErrorLogin]=useState(null)
 
     const registerForm={
         name:'',
@@ -32,17 +42,35 @@ export const LoginPage=()=>{
     const {name,email,password}=valuesRegister
     const {email:emailLogin,password:passwordLogin}=valuesLogin
 
-    useEffect(()=>{
-        axios.get(baseURL)
-            .then((res)=>{
-                setUser(res.data)
-                // console.log(user)
-            })
-            .catch(err=>{
-                console.log(err)
-            })
+    const validateEmail = (email:string) => {
+        const re =
+            /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        return re.test(String(email).toLowerCase());
+    };
+    //
+    // useEffect(()=>{
+    //     axios.get(baseURL)
+    //         .then((res)=>{
+    //             setUser(res.data)
+    //             // console.log(user)
+    //         })
+    //         .catch(err=>{
+    //             console.log(err)
+    //         })
+    //
+    // },[])
+    // let cont=0;
 
-    },[])
+    useEffect(() => {
+            setValidName((name.trim().length<4)?false:true);
+    }, [name])
+    useEffect(() => {
+        setValidEmailRegister(validateEmail(email));
+    }, [email])
+    useEffect(() => {
+        setValidPasswordRegister((password.trim().length<8)?false:true);
+    }, [password])
+
     const registerUser=()=>{
         axios.post(baseURL,valuesRegister)
             .then((res)=>{
@@ -53,6 +81,7 @@ export const LoginPage=()=>{
             })
             .catch((err)=>{
                 console.log(err.response.data)
+                setError(err.response.data.msg)
             })
     }
     const login=()=>{
@@ -65,11 +94,22 @@ export const LoginPage=()=>{
         })
             .catch(err=>{
                 console.log(err.response.data)
+                setErrorLogin(err.response.data.msg)
             })
     }
 
     const handleRegister=(e:any)=>{
         e.preventDefault()
+        if(name.trim().length<4){
+            return setValidTempName(false)
+
+        }
+        if(!validateEmail(email)){
+            return setValidTempEmailRegister(false)
+        }
+        if(password.trim().length<8){
+            return setValidTempPasswordRegister(false)
+        }
         registerUser()
         // console.log(e.target.value)
         // const {name,email,password}
@@ -112,6 +152,8 @@ export const LoginPage=()=>{
                         <h1 className="text-3xl font-semibold text-center text-gray-800">
                             Iniciar sesion
                         </h1>
+                        {errorLogin && <div className="font-semibold text-red-700">{errorLogin}</div>}
+
                         <form className="mt-6" onSubmit={handleLogin}>
                             <div>
                                 <label htmlFor="email" className="block font-semibold  text-sm text-gray-800"> Correo electronico</label>
@@ -122,6 +164,7 @@ export const LoginPage=()=>{
                                        onChange={handleInputChange2}
                                        placeholder="correo electronico"
                                 />
+
                             </div>
                             <div className="mt-4 ">
                                 <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
@@ -146,16 +189,34 @@ export const LoginPage=()=>{
                         <h1 className="text-3xl font-semibold text-center  text-gray-800">
                             Registrarse
                         </h1>
+                        {error && <div className="font-semibold text-red-700">{error}</div>}
                         <form className="mt-6" onSubmit={handleRegister}>
                             <div className="">
                                 <label htmlFor="name" className="block font-semibold text-sm text-gray-800"> Nombre de usuario </label>
-                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                <input className={`block
+                                    w-full px-4 py-2 mt-2
+                                    text-gray-700 bg-white
+                                    border rounded-md
+                                    focus:ring-gray-300
+                                    focus:outline-none
+                                    focus:ring
+                                    focus:ring-opacity-40
+                                    focus:border-gray-700
+                                    ${!(validName||(!name&&validTempName))&&'focus:border-red-500 border-red-500'}`}
                                        type="text"
+                                       id="name"
                                        name="name"
+                                       aria-invalid={true}
                                        value={name}
+                                       onFocus={()=>setUserFocus(true)}
+                                       onBlur={()=>setUserFocus(false)}
                                        onChange={handleInputChange}
                                        placeholder="nombre de usuario"
                                 />
+                                <p className={`font-base text-sm text-slate-500 
+                                 ${(!validName&&userFocus)?'visible':'hidden'} `}>
+                                    4 a 12 caracteres
+                                </p>
                             </div>
                             <div className="mt-4 ">
                                 <label
@@ -163,25 +224,58 @@ export const LoginPage=()=>{
                                     className="block font-semibold text-sm text-gray-800">
                                     Correo Electronico
                                 </label>
-                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                <input className={`block 
+                                w-full px-4 
+                                py-2 mt-2 text-gray-700 
+                                bg-white border 
+                                rounded-md 
+                                focus:border-gray-700 
+                                focus:ring-gray-300 
+                                focus:outline-none focus:ring focus:ring-opacity-40
+                                ${!(validEmailRegister||(!email&&validTempEmailRegister))&&'focus:border-red-500 border-red-500'}
+                                `}
                                        type="email"
+                                       id="email"
                                        name="email"
                                        value={email}
                                        onChange={handleInputChange}
+                                       onFocus={()=>setEmailFocus(true)}
+                                       onBlur={()=>setEmailFocus(false)}
                                        placeholder="correo electronico"
                                 />
+                                <p className={`font-base text-sm text-slate-500 
+                                 ${(!validEmailRegister&&emailFocus)?'visible':'hidden'} `}>
+                                    formato incorrecto
+                                </p>
                             </div>
                             <div className="mt-4 ">
                                 <label htmlFor="password" className="block font-semibold text-sm text-gray-800"> Contrasenia </label>
-                                <input className="block w-full px-4 py-2 mt-2 text-gray-700 bg-white border rounded-md focus:border-gray-700 focus:ring-gray-300 focus:outline-none focus:ring focus:ring-opacity-40"
+                                <input className={`block w-full 
+                                px-4 py-2 mt-2
+                                 text-gray-700 
+                                 bg-white border 
+                                 rounded-md focus:border-gray-700 
+                                 focus:ring-gray-300 focus:outline-none
+                                  focus:ring focus:ring-opacity-40
+                                   ${!(validPasswordRegister||(!password&&validTempPasswordRegister))
+                                &&
+                                'focus:border-red-500 border-red-500'}
+                                  `}
                                        type="password"
+                                       id="password"
                                        name="password"
                                        value={password}
-                                       onChange={handleInputChange}
 
+                                       onChange={handleInputChange}
+                                       onFocus={()=>setPswFocus(true)}
+                                       onBlur={()=>setPswFocus(false)}
 
                                        placeholder="contrasenia"
                                 />
+                                <p className={`font-base text-sm text-slate-500 
+                                 ${(!validPasswordRegister&&pswFocus)?'visible':'hidden'} `}>
+                                    8 a 24 caracteres
+                                </p>
                             </div>
 
                             <button  className="mt-4 border w-full px-4 py-2 tracking-wide text-white transition-colors duration-200 transform bg-gray-800 rounded-md hover:bg-gray-900 focus:outline-none focus:bg-gray-800">
