@@ -22,7 +22,7 @@ export const ForumPage = () => {
         {
           loading 
             ? <p>Cargando...</p>
-            : <CategoryThread/>
+            : data!.forums.map(forum => <CategoryThread category={forum.title}/>)
         }
       </div>
     </>

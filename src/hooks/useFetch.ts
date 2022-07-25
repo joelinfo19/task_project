@@ -1,18 +1,19 @@
 
 import {useState, useEffect} from 'react'
+import {ForumsResponse} from '../types/ForumResponse';
 
 type fetchObject = {
-  data: any,
+  data?: ForumsResponse,
   loading: boolean,
   error: boolean | null,
 }
 
 export const useFetch = ( url: string ) => {
 
-  const [state, setState] = useState<fetchObject>({ data: null, loading: true, error: null });
+  const [state, setState] = useState<fetchObject>({loading: true, error: null });
 
   useEffect(() => {
-    setState({ data:null, loading: true, error: null });
+    setState({ loading: true, error: null });
     fetch( url )
       .then( resp => resp.json() )
       .then( data => {
@@ -26,7 +27,6 @@ export const useFetch = ( url: string ) => {
         setState({
           loading: false,
           error: true,
-          data: null,
         })
         console.log('Error: ', err)
       })

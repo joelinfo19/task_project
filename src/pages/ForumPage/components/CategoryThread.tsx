@@ -1,9 +1,13 @@
 import {ItemThread} from "./ItemThread"
 
-export const CategoryThread = () => {
+type propType = {
+  category: string,
+}
+
+export const CategoryThread = ({category}:propType) => {
   return (
     <div className="m-4">
-      <p>Categoría</p>
+      <p>{ category }</p>
       <div className="w-full border border-gray-200 rounded-xl">
         <ItemThread/>
         <ItemThread/>
