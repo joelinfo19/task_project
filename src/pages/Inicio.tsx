@@ -9,7 +9,9 @@ export default function Inicio() {
   const [task, setTask] = useState<any[]>([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
-  const [search,setSearch]=useState("")
+  const [search, setSearch] = useState("")
+  const [sdoc, setSdoc] = useState("")
+  const [scurso, setScurso] = useState("")
 
   useEffect(() => {
     axios.get(`https://task-js.herokuapp.com/api/tasks`)
@@ -25,31 +27,30 @@ export default function Inicio() {
 
   // console.log(task)
   const Loading = () => (
-      <h1>ALDACO COMUNISTA ODIA BOOTSTRAP</h1>
+    <div className="inline-block w-10 h-10 
+           border-4
+            border-r-[#007bff]
+            rounded-full 
+            animate-spin">
+    </div>
   )
+  // console.log(sdoc.toLowerCase())
 
 
   return (
     <>
       <div className='mx-[5%]'>
-        <Filtros />
+        <Filtros cambiarBusq={setSearch} cambiarDoc={setSdoc} cambiarCurs={setScurso} />
         <h1 className='text-2xl font-bold mb-3'>Lo último agregado</h1>
         {error && <p className='alert alert-danger'><b className='mr-2'>Fuck!</b>Error server not found</p>}
         {loading && <Loading />}
-        {/* {
-          task.map((e, i) => {
-            return <Card key={i} titulo={e.title} docente={e.author} data={e.data} />
-          })
-        } */}
-
-
 
         {task.filter((val: any) => {
-          if (search === "" || val.course.toLowerCase().includes(search.toLowerCase()) || val.author.toLowerCase().includes(search.toLowerCase())) {
+          if (val.author.toLowerCase().includes(sdoc.toLowerCase()) && (val.course.toLowerCase().includes(scurso.toLowerCase()) && (search === "" || val.title.toLowerCase().includes(search.toLowerCase())))) {
             return val
           }
           return false
-        }).reverse().map((e,i) => (
+        }).reverse().map((e, i) => (
           <Card key={i} titulo={e.title} docente={e.author} data={e.data} />
         ))
         }
