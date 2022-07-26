@@ -48,17 +48,17 @@ export const LoginPage=()=>{
         return re.test(String(email).toLowerCase());
     };
     //
-    useEffect(()=>{
-        axios.get(baseURL)
-            .then((res)=>{
-                setUser(res.data)
-                console.log(res.data)
-            })
-            .catch(err=>{
-                console.log(err)
-            })
-
-    },[])
+    // useEffect(()=>{
+    //     axios.get(baseURL)
+    //         .then((res)=>{
+    //             setUser(res.data)
+    //             console.log(res.data)
+    //         })
+    //         .catch(err=>{
+    //             console.log(err)
+    //         })
+    //
+    // },[])
     // let cont=0;
     const setLocalStorage=(value:any)=>{
         try{

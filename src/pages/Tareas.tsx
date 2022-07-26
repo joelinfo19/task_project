@@ -24,6 +24,7 @@ export default function Tareas() {
             .then(res => {
                 const tareas = res.data;
                 setTasks(tareas.tasks.filter(isTask))
+                // console.log(localStorage.getItem('user'))
             })
             .catch(error => {
                 setError(true)
