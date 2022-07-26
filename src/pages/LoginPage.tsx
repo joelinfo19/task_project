@@ -48,19 +48,26 @@ export const LoginPage=()=>{
         return re.test(String(email).toLowerCase());
     };
     //
-    // useEffect(()=>{
-    //     axios.get(baseURL)
-    //         .then((res)=>{
-    //             setUser(res.data)
-    //             // console.log(user)
-    //         })
-    //         .catch(err=>{
-    //             console.log(err)
-    //         })
-    //
-    // },[])
-    // let cont=0;
+    useEffect(()=>{
+        axios.get(baseURL)
+            .then((res)=>{
+                setUser(res.data)
+                console.log(res.data)
+            })
+            .catch(err=>{
+                console.log(err)
+            })
 
+    },[])
+    // let cont=0;
+    const setLocalStorage=(value:any)=>{
+        try{
+            localStorage.setItem('user',value)
+        }
+        catch(e){
+            console.log(e)
+        }
+    }
     useEffect(() => {
             setValidName((name.trim().length<4)?false:true);
     }, [name])
@@ -75,9 +82,11 @@ export const LoginPage=()=>{
         axios.post(baseURL,valuesRegister)
             .then((res)=>{
                 setUser(res.data)
+                console.log(res.data)
                 if(res.data.ok){
                     navigate("/",{replace:true})
                 }
+                setLocalStorage(res.data.usuario._id)
             })
             .catch((err)=>{
                 console.log(err.response.data)
@@ -90,6 +99,8 @@ export const LoginPage=()=>{
             if(res.data.ok){
                 navigate("/",{replace:true})
             }
+            console.log(res.data)
+            setLocalStorage(res.data.userDb._id)
             // console.log(res)
         })
             .catch(err=>{
