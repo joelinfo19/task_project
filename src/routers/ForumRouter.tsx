@@ -1,12 +1,19 @@
 
-import {Routes, Route} from 'react-router-dom'
-import {ForumPage} from "../pages/ForumPage/ForumPage";
+import { Routes, Route } from 'react-router-dom'
+import Navbar from '../components/Dashboard/Navbar';
+import { ForumPage } from "../pages/ForumPage/ForumPage";
+import { ListForum } from '../pages/ForumPage/ListForum';
 
 export default function ForumRouter() {
   return (
-    <Routes>
-      <Route path='/:idForum' element={<p> fiu fiu </p>} />
-      <Route path='/' element={<ForumPage />} />
-    </Routes>
+    <>
+      <Navbar />
+      <Routes>
+        <Route path='/' element={<ForumPage />} >
+          <Route index element={<ListForum />} />
+          <Route path=':idForum' element={<p> fiu fiu </p>} />
+        </Route>
+      </Routes>
+    </>
   )
 }
