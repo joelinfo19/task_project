@@ -1,9 +1,9 @@
 import React, {useEffect, useState} from 'react'
 import Filtros from "../components/Repositorio/Filtros";
-import {FilePage} from "./FilePage";
 import axios from "axios";
 import Card from "../components/Repositorio/Card";
 import Alert from "../components/Repositorio/Alert";
+import Boton from '../components/Repositorio/Boton';
 
 const taskUrl="https://task-js.herokuapp.com/api/tasks"
 export default function Tareas() {
@@ -52,8 +52,9 @@ export default function Tareas() {
   return (
     <div>
         <div className='mx-[5%]'>
+            <Boton texto='Subir nueva tarea' />
             <Filtros cambiarBusq={setSearch} cambiarDoc={setSdoc} cambiarCurs={setScurso} />
-            <h1 className='text-2xl font-bold mb-3'>Lo último agregado</h1>
+            <h1 className='text-2xl font-bold mb-3'>Tareas recientes</h1>
             {/* {error && <p className='alert alert-danger'><b className='mr-2'>Fuck!</b>Error server not found</p>} */}
             {error && <Alert />}
             {loading && <Loading />}
@@ -64,7 +65,7 @@ export default function Tareas() {
                 }
                 return false
             }).reverse().map((e, i) => (
-                <Card key={i} titulo={e.title} docente={e.author} data={e.data} />
+                <Card key={i} task={e} />
             ))
             }
         </div>

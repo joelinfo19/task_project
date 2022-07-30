@@ -3,6 +3,7 @@ import Card from '../components/Repositorio/Card'
 import Filtros from '../components/Repositorio/Filtros'
 
 import axios from 'axios';
+import Boton from '../components/Repositorio/Boton';
 
 export default function Inicio() {
 
@@ -40,6 +41,7 @@ export default function Inicio() {
   return (
     <>
       <div className='mx-[5%]'>
+        <Boton texto='Subir nuevo trabajo' />
         <Filtros cambiarBusq={setSearch} cambiarDoc={setSdoc} cambiarCurs={setScurso} />
         <h1 className='text-2xl font-bold mb-3'>Lo último agregado</h1>
         {error && <p className='alert alert-danger'><b className='mr-2'>Fuck!</b>Error server not found</p>}
@@ -51,7 +53,7 @@ export default function Inicio() {
           }
           return false
         }).reverse().map((e, i) => (
-          <Card key={i} titulo={e.title} docente={e.author} data={e.data} />
+          <Card key={i} task={e} />
         ))
         }
       </div>

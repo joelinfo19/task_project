@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FiMenu } from 'react-icons/fi';
+import { useLocation } from "react-router-dom";
 
 type Props = React.PropsWithChildren<{}>
 
@@ -11,12 +12,24 @@ export default function Dashboard({ children }: Props) {
     setOpen(!open);
   }
 
-  const menus = [
-    { link: "/", title: "Inicio", icon: "fa fa-home" },
-    { link: "tareas", title: "Tareas", icon: "fas fa-address-card" },
-    { link: "practicas", title: "Practicas", icon: "fas fa-project-diagram" },
-    { link: "examenes", title: "Examenes", icon: "fas fa-blog" },
-  ];
+  //assigning location variable
+  const location = useLocation();
+
+  //destructuring pathname from location
+  const { pathname } = location;
+
+  const splitLocation = pathname.split("/");
+
+  // const menus = [
+  //   { link: "/", title: "Inicio", icon: "fa fa-home" },
+  //   { link: "tareas", title: "Tareas", icon: "fas fa-address-card" },
+  //   { link: "practicas", title: "Practicas", icon: "fas fa-project-diagram" },
+  //   { link: "examenes", title: "Examenes", icon: "fas fa-blog" },
+  // ];
+
+  const isActive = (link:string) => {
+    return splitLocation[1] === link
+  }
 
 
   return (
@@ -25,19 +38,19 @@ export default function Dashboard({ children }: Props) {
         <nav className={`${`${open ? 'w-64 ' : 'w-0'}`}  bg-[#363740] h-full duration-300`} id='naavbaar' >
           {/* NAVBAR */}
           <img className=' w-28 mx-auto my-8' src="https://cdn-icons-png.flaticon.com/512/1534/1534938.png" alt="" />
-          <ul className={`${open ? 'opacity-1' : 'opacity-0 pointer-events-none'}`}>
-            {
-              menus.map((e, i) => (
-                <Link to={e.link} key={i}>
-                  <li className='text-[#a1a1a5] block py-3 pl-3 md:pl-8  hover:bg-[#4a4a57] hover:text-white '>
-                    <div className='flex items-center'>
-                      <i className={`${e.icon} mr-3`}></i>
-                      <span className='text-lg w-5'>{e.title}</span>
-                    </div>
-                  </li>
-                </Link>
-              ))
-            }
+          <ul className={`${open ? 'opacity-1' : 'opacity-0 pointer-events-none'} text-[#a1a1a5]`}>
+            <Link to='/' className={`${isActive('')&& 'text-[#e2ad68] font-semibold'} block py-3 pl-3 md:pl-8  hover:bg-[#4a4a57] hover:text-white`}>
+              <li><span className={`text-lg w-5 ml-3`}>Inicio</span></li>
+            </Link>
+            <Link to='/tareas' className={`${isActive('tareas')&& 'text-[#e2ad68] font-semibold'} block py-3 pl-3 md:pl-8  hover:bg-[#4a4a57] hover:text-white`}>
+              <li><span className={`text-lg w-5 ml-3`}>Tareas</span></li>
+            </Link>
+            <Link to='/practicas' className={`${isActive('practicas')&& 'text-[#e2ad68] font-semibold'} block py-3 pl-3 md:pl-8  hover:bg-[#4a4a57] hover:text-white`}>
+              <li><span className={`text-lg w-5 ml-3`}>Practicas</span></li>
+            </Link>
+            <Link to='/examenes' className={`${isActive('examenes')&& 'text-[#e2ad68] font-semibold'} block py-3 pl-3 md:pl-8  hover:bg-[#4a4a57] hover:text-white`}>
+              <li><span className={`text-lg w-5 ml-3`}>Examenes</span></li>
+            </Link>
           </ul>
           {/* END NAVBAR */}
         </nav>

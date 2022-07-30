@@ -1,6 +1,7 @@
 import axios from 'axios'
 import React, { useEffect, useState } from 'react'
 import Alert from '../components/Repositorio/Alert'
+import Boton from '../components/Repositorio/Boton'
 import Card from '../components/Repositorio/Card'
 import Filtros from '../components/Repositorio/Filtros'
 
@@ -45,8 +46,9 @@ export default function Practicas() {
   return (
     <>
       <div className='mx-[5%]'>
+        <Boton texto='Subir nueva practica' />
         <Filtros cambiarBusq={setSearch} cambiarDoc={setSdoc} cambiarCurs={setScurso} />
-        <h1 className='text-2xl font-bold mb-3'>Lo último agregado</h1>
+        <h1 className='text-2xl font-bold mb-3'>Prácticas recientes</h1>
         {/* {error && <p className='alert alert-danger'><b className='mr-2'>Fuck!</b>Error server not found</p>} */}
         {error && <Alert />}
         {loading && <Loading />}
@@ -57,7 +59,7 @@ export default function Practicas() {
           }
           return false
         }).reverse().map((e, i) => (
-          <Card key={i} titulo={e.title} docente={e.author} data={e.data} />
+          <Card key={i} task={e} />
         ))
         }
       </div>
